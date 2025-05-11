@@ -10,10 +10,7 @@ const Hero = () => {
     return (
 
         <div className='relative h-[570px]'>
-
             {/* Main Heading */}
-
-            
             <div className="text-white underline text-6xl font-bold pl-20 pt-54 lg:text-7xl">
                 Find your <br /> residential hall
             </div>
@@ -28,10 +25,9 @@ const Hero = () => {
             </div>
             <div 
                 className="absolute inset-0 bg-cover bg-top h-[570px] -z-10" 
-                style={{ backgroundImage: "url('./src/assets/usu.png')" }}
+                style={{ backgroundImage: "url('./usu.png')" }}
             >
             </div>
-            
         </div>
     )
 }
