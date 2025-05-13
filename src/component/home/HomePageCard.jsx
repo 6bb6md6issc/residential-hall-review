@@ -1,6 +1,6 @@
 import React from 'react'
-import leftCard from "../assets/share_image.png"
-import rightCard from "../assets/find_residential_hall.png"
+import leftCard from "../../assets/share_image.png"
+import rightCard from "../../assets/find_residential_hall.png"
 
 const HomePageCard = () => {
   return (
