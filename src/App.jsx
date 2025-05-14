@@ -4,7 +4,7 @@ import HallReviewPage from './pages/HallReviewPage';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage'
 import ShareReviewPage from './pages/ShareReviewPage';
-
+import MyReview from './component/myReview/MyReview';
 const wasatchHall = {
   hallName: "wasatch", 
   reviews: [
@@ -39,6 +39,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="review" element={<HallReviewPage hall={wasatchHall}/>}/>
         <Route path="share" element={<ShareReviewPage hall={wasatchHall}/>}/>
+        <Route path="my-review" element={<MyReview />}/>
       </Route>
     </Routes>
   )
