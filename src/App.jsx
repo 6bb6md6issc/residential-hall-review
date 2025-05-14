@@ -4,7 +4,8 @@ import HallReviewPage from './pages/HallReviewPage';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage'
 import ShareReviewPage from './pages/ShareReviewPage';
-import MyReview from './component/myReview/MyReview';
+import MyReviewPage from "./pages/MyReviewPage";
+
 const wasatchHall = {
   hallName: "wasatch", 
   reviews: [
@@ -31,6 +32,14 @@ const wasatchHall = {
     },
   ]};
 
+const reviews = [
+  {building: "wasatch hall", date:"March 17, 2025"},
+  {building: "wasatch hall", date:"March 17, 2025"},
+  {building: "wasatch hall", date:"March 17, 2025"},
+  {building: "wasatch hall", date:"March 17, 2025"},
+  {building: "wasatch hall", date:"March 17, 2025"},
+]
+
 function App() {
 
   return (
@@ -39,10 +48,11 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="review" element={<HallReviewPage hall={wasatchHall}/>}/>
         <Route path="share" element={<ShareReviewPage hall={wasatchHall}/>}/>
-        <Route path="my-review" element={<MyReview />}/>
+        <Route path="my-review" element={<MyReviewPage reviews={reviews}/>}/>
       </Route>
     </Routes>
   )
 }
 
 export default App
+

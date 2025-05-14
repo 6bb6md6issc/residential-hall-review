@@ -1,5 +1,5 @@
-import React, { useState }  from 'react'
-
+import React, { useState, Suspense }  from 'react'
+import HeroLoading from './HeroLoading';
 
 const Hero = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -23,12 +23,12 @@ const Hero = () => {
                     className="rounded-2xl w-full h-full px-4 py-3 border-2 border-black text-gray-500 bg-white text-lg focus:outline-none focus:border-black"
                 />
             </div>
-
-            <div 
-                className="absolute inset-0 bg-cover bg-top h-[570px] -z-10" 
-                style={{ backgroundImage: "url('./usu.png')" }}
-            >
-            </div>
+            <Suspense fallback={<HeroLoading />}>
+                <div 
+                    className="absolute inset-0 bg-cover bg-top h-[570px] -z-10" 
+                    style={{ backgroundImage: "url('./usu.png')" }}
+                />
+            </Suspense>
         </div>
     )
 }
