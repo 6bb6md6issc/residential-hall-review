@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage'
 import ShareReviewPage from './pages/ShareReviewPage';
 import MyReviewPage from "./pages/MyReviewPage";
+import RegisterPage from './pages/RegisterPage';
 
 const wasatchHall = {
   hallName: "wasatch", 
@@ -49,6 +50,7 @@ function App() {
         <Route path="review" element={<HallReviewPage hall={wasatchHall}/>}/>
         <Route path="share" element={<ShareReviewPage hall={wasatchHall}/>}/>
         <Route path="my-review" element={<MyReviewPage reviews={reviews}/>}/>
+        <Route path="register" element={<RegisterPage />}/>
       </Route>
     </Routes>
   )

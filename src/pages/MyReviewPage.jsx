@@ -5,7 +5,7 @@ const MyReviewPage = ({ reviews }) => {
 
   return (
     <div className='w-full mt-10'>
-      <h1 className='text-5xl sm:text-6xl font-bold text-center sm:text-left sm:ml-20 mb-10'>
+      <h1 className='text-5xl sm:text-6xl font-bold text-left ml-10 sm:ml-20 mb-10'>
         My Reviews
       </h1>
       <div
