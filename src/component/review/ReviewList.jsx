@@ -7,10 +7,11 @@ const ReviewList = ({reviews}) => {
       {reviews.map((review, i) => (
         <Review
           key={i}
-          rating={review.rating}
-          term={review.term}
-          date={review.date}
+          rating_value={review.rating_value}
+          start_year={review.start_year}
+          created_at={review.created_at}
           content={review.content}
+          rating_id={review.rating_id}
         />
       ))}
     </div>

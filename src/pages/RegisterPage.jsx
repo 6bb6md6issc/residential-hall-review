@@ -1,53 +1,81 @@
 import React, {useState, useEffect } from 'react'
 import sideImage from "../assets/register_img.png"
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import FormSubmissionMessage from '../component/form/FormSubmissionMessage'
+import FieldErrorMessage from '../component/form/FieldErrorMessage'
 
 const RegisterPage = () => {
-  
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassowrd, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [outcome, setOutcome] = useState({success: false, message: ""});
 
   useEffect(() => {
   
     const error = {};
     // check valid email
     if (!email.includes('@')) {
-      error.email = 'Invalid email address';
+      error.emailError = 'Invalid email address';
     }
     
     if (password.length <= 5) {
-      error.password = 'must be at least 6 characters';
+      error.passwordError = 'must be at least 6 characters';
     }
 
-    if (password !== confirmPassowrd){
-      error.confirmPassowrd = "Password must match";
+    if (password !== confirmPassword){
+      error.confirmPasswordError = "Password must match";
     }
 
     setFieldErrors(error)
 
     const isEmailValid = email.includes('@');
     const isPasswordValid = password.length > 5;
-    const isConfirmPasswordValid = confirmPassowrd === password;
+    const isConfirmPasswordValid = confirmPassword === password;
 
     setIsFormValid(
       isEmailValid && isPasswordValid && isConfirmPasswordValid
     );
 
-  }, [email, password, confirmPassowrd])
+  }, [email, password, confirmPassword])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = { email, password };
     // todo
+    try{
+      const response = await fetch("/signup", {
+        method : "POST",
+        headers: { 'Content-Type': 'application/json',},
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        if (data.message === "User Already Exists"){
+          setFieldErrors(prev => ({
+            success: false,
+            message : "This email is already registered"
+          }))
+        }
+      } else {
+        // successfully registered
+        navigate("/verify")
+      }
+    } catch(error){
+      console.error("Network or server error:", error);
+    }
+
   }
 
   return (
     <div className='flex flex-col md:flex-row h-screen'>
       <div className='flex justify-center md:w-1/2 '>
-        <form className="mt-20 md:mt-30">
+        <form onSubmit={handleSubmit} className="mt-20 md:mt-20">
           <h2 className='text-3xl mb-5 text-center font-bold'>Register</h2>
           <label 
             htmlFor="email" 
@@ -61,11 +89,9 @@ const RegisterPage = () => {
             placeholder = {"example@gmail.com"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className='outline-none border-2 mb-1 border-black rounded-sm px-2 h-10 w-70'
+            className='outline-none border-2 mb-1 border-black rounded-lg px-2 h-10 w-70'
           />
-          {!fieldErrors.email ? (<div className='mb-10'></div>) : (
-            <h2 className='text-red-500 mb-4'>{fieldErrors.email}</h2>
-          )}
+          <FieldErrorMessage fieldError={fieldErrors} field="emailError" />
 
 
           {/* password */}
@@ -81,11 +107,9 @@ const RegisterPage = () => {
             placeholder = {""}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='outline-none border-2 border-black rounded-sm px-2 h-10 w-70'
+            className='outline-none border-2 border-black rounded-lg px-2 h-10 w-70'
           />
-          {!fieldErrors.password ? (<div className='mb-10'></div>) : (
-            <h2 className='text-red-500 mb-4'>{fieldErrors.password}</h2>
-          )}
+          <FieldErrorMessage fieldError={fieldErrors} field="passwordError" />
 
           {/* confirm password */}
           <label 
@@ -98,21 +122,18 @@ const RegisterPage = () => {
             type = "password" 
             name = "confirm"
             placeholder = {""}
-            value={confirmPassowrd}
+            value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className='outline-none border-2 border-black rounded-sm px-2 h-10 w-70'
+            className='outline-none border-2 border-black rounded-lg px-2 h-10 w-70'
           />
           <Link className="my-2 font-bold underline block" to={"/login"}>Login</Link>
-          {!fieldErrors.confirmPassowrd ? (<div className='mb-10'></div>) : (
-            <h2 className='text-red-500 h-4'>{fieldErrors.confirmPassowrd}</h2>
-          )}
-
+          <FieldErrorMessage fieldError={fieldErrors} field="confirmPasswordError" />
+          <FormSubmissionMessage outcome={outcome} />
           
 
           <button
             type='submit'
             disabled={!isFormValid}
-            onClick={handleSubmit}
             className={`block ${isFormValid ? 'bg-[#0F2439] text-white' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Register

@@ -1,7 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OneReviewHistory from '../component/myReview/OneReviewHistory';
+import axios from 'axios';
+import { useAuth } from '../provider/authProvider';
+const MyReviewPage = () => {
+  const { token } = useAuth();
+  const [reviews, setReviews] = useState([])
+const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    const getMyReview = async () => {
+      if (!token) return;
+      try{
+        console.log("Token used:", token);
+        const response = await axios.get("/api/v1/rating/my-ratings", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        setReviews(response.data);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getMyReview()
+  }, [token])
 
-const MyReviewPage = ({ reviews }) => {
 
   return (
     <div className='w-full mt-10'>
@@ -20,7 +42,7 @@ const MyReviewPage = ({ reviews }) => {
         {/* table body */}
         <div></div>
         {
-          reviews.map(review => <OneReviewHistory review={review}/>)
+          reviews.map(review => <OneReviewHistory key={review.id} review={review}/>)
         }
         
       </div>
