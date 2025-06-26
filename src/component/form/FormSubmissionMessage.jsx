@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FormSubmissionMessage = (outcome) => {
+const FormSubmissionMessage = ({outcome}) => {
   return (
     <div>
       {

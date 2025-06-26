@@ -2,8 +2,12 @@ import React, { useEffect, useState, useRef }  from 'react'
 import logo from "../assets/navbarlogo.png"
 import { Link } from 'react-router-dom';
 import { useDebouncedCallback } from "use-debounce"
+import { useAuth } from '../provider/authProvider';
+import axios from 'axios';
 
 const NavBar = () => {
+
+  const { token } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
@@ -30,19 +34,14 @@ const NavBar = () => {
 
   const handleSearch = useDebouncedCallback(async (searchTerm) => {
     const searchParam = '/api/v1/building/search?searchText=' + searchTerm
-    if (searchParam.trim() === "") {
+    if (searchTerm.trim() === "") {
       setResults([]);
       setShowDropdown(false);
       return;
     }
     try{
-      const response = await fetch(searchParam, {
-        method : "GET",
-        headers: { 'Content-Type': 'application/json',},
-      })
-      if (!response.ok) throw new Error("Search request failed");
-      const data = await response.json();
-      setResults(data);
+      const response = await axios.get(searchParam);
+      setResults(response.data);
       setShowDropdown(true);
     } catch (error) {
       console.log("Error fetching buildings:", error);
@@ -83,10 +82,16 @@ const NavBar = () => {
                   {results.map((building, index) => (
                     <li
                       key={index}
-                      onClick={() => handleResultClick(building.buildingName)}
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     >
-                      {building.buildingName}
+                      <Link 
+                        className='block w-full'
+                        onClick={() => handleResultClick(building.buildingName)} 
+                        to={`/rating/${building.id}`}
+                        // 
+                      >
+                        {building.buildingName}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -95,9 +100,9 @@ const NavBar = () => {
         </div>
 
       <div className="flex justify-center md:justify-end space-x-6 font-bold w-full md:w-auto">
-        <h1>Review</h1>
-        <h1>My Review</h1>
-        <Link to="/login"><h1>Login</h1></Link>
+        
+        <Link to="/my-review">My Review</Link>
+        {token ?  <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
       </div>
     </div>
   </div>

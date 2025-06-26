@@ -3,6 +3,7 @@ import sideImage from "../assets/register_img.png"
 import { useParams, useNavigate } from 'react-router-dom';
 import FormSubmissionMessage from '../component/form/FormSubmissionMessage';
 import FieldErrorMessage from '../component/form/FieldErrorMessage';
+import axios from 'axios';
 
 const ResetPage = () => {
   const { code } = useParams();
@@ -39,31 +40,27 @@ const ResetPage = () => {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
-    // todo
     try{
-      const response = await fetch("/reset-password", {
-        method : "POST",
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify({
-          email : email,
-          password : password,
-          resetPasswordCode : code,
-        }),
+      const response = await axios.post("api/v1/auth/reset-password", {
+        email, new_password: confirmPassword, token: code
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        if (data.message === "User Not Found")
-          setOutcome({success: false, message: "Please Register Account First"})
-      } else {
-        // successfully reset password
-        setEmail("")
-        setPassword("")
-        setConfirmPassword("")
-        setOutcome([true, "Password reset. Please Login"])
-      }
+      // successfully reset password
+      setEmail("")
+      setPassword("")
+      setConfirmPassword("")
+      setOutcome({success: true, message: "Password reset. Please Login" })
     } catch(error){
-      console.error("Network or server error:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message === "User Not Found"
+      ) {
+        setOutcome({ success: false, message: "Please Register Account First" });
+      } else {
+        console.error("Network or server error:", error);
+        setOutcome({ success: false, message: "Some error occurred" });
+      }
     }
   }
 
@@ -128,7 +125,7 @@ const ResetPage = () => {
           <button
             type='submit'
             disabled={!isFormValid}
-            className={`block ${isFormValid ? 'bg-[#0F2439] text-white' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
+            className={`block ${isFormValid ? 'bg-[#0F2439] text-white hover:bg-[#1d4165] shadow-md shadow-black/40 cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Send Reset Link
           </button>

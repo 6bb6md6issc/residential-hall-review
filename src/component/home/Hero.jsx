@@ -14,7 +14,7 @@ const Hero = () => {
             <div className="text-white underline text-6xl font-bold ml-6 md:pl-14 lg:pl-20 pt-54 lg:text-7xl">
                 Find your <br /> residential hall
             </div>
-            <div className="w-full max-w-90 h-16 mt-10 ml-6 md:pl-14 lg:ml-18 lg:max-w-120">
+            {/* <div className="w-full max-w-90 h-16 mt-10 ml-6 md:pl-14 lg:ml-18 lg:max-w-120">
                 <input
                     type="text"
                     placeholder="Enter residential hall name"
@@ -22,7 +22,7 @@ const Hero = () => {
                     onChange={handleSearch}
                     className="rounded-2xl w-full h-full px-4 py-3 border-2 border-black text-gray-500 bg-white text-lg focus:outline-none focus:border-black"
                 />
-            </div>
+            </div> */}
             <Suspense fallback={<HeroLoading />}>
                 <div 
                     className="absolute inset-0 bg-cover bg-top h-[570px] -z-10" 

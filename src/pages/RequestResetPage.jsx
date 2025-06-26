@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import sideImage from "../assets/register_img.png"
-
+import axios from 'axios'
 
 const RequestResetPage = () => {
 
@@ -21,24 +21,23 @@ const RequestResetPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // todo
-    try{
-      const response = await fetch("/reset-password-request", {
-        method : "POST",
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify({email : email}),
-      });
+    try {
+      const response = await axios.post('/api/v1/auth/reset-password-request', { email });
 
-      if (!response.ok) {
-        const data = await response.json();
-        if (data.message === "User Not Found")
-          setError("Please Register Account First")
+      // Successfully requested password reset
+      setEmail('');
+      setSuccessMessage('Please check email to reset password');
+    } catch (error) {
+      console.log(error)
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message === 'User Not Found'
+      ) {
+        setError('Please Register Account First');
       } else {
-        // successfully registered
-        setEmail("")
-        setSuccessMessage("Please check email to reset password")
+        setError('Something went wrong. Please try again later.');
       }
-    } catch(error){
-      console.error("Network or server error:", error);
     }
   }
 

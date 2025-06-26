@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import FormSubmissionMessage from '../component/form/FormSubmissionMessage'
 import FieldErrorMessage from '../component/form/FieldErrorMessage'
+import axios from 'axios';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -47,27 +48,27 @@ const RegisterPage = () => {
     e.preventDefault();
     const payload = { email, password };
     // todo
-    try{
-      const response = await fetch("/signup", {
-        method : "POST",
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify(payload),
+    try {
+      const response = await axios.post("/api/v1/signup", payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        if (data.message === "User Already Exists"){
+      // If request is successful
+      navigate("/verify");
+    } catch (error) {
+      if (error.response) {
+        const data = error.response.data;
+        if (data.message === "User Already Exists") {
           setFieldErrors(prev => ({
             success: false,
-            message : "This email is already registered"
-          }))
+            message: "This email is already registered",
+          }));
         }
       } else {
-        // successfully registered
-        navigate("/verify")
+        console.error("Network or server error:", error);
       }
-    } catch(error){
-      console.error("Network or server error:", error);
     }
 
   }
@@ -134,7 +135,7 @@ const RegisterPage = () => {
           <button
             type='submit'
             disabled={!isFormValid}
-            className={`block ${isFormValid ? 'bg-[#0F2439] text-white' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
+            className={`block ${isFormValid ? 'bg-[#0F2439] text-white  hover:bg-[#1d4165] shadow-md shadow-black/40 cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Register
           </button>

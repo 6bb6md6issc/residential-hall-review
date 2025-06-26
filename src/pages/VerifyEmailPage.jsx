@@ -75,25 +75,23 @@ const VerifyEmailPage = () => {
 
   // resend the verification code
   const handleResend = async () => {
-    try{
-      const resendResponse = await fetch("/resend-verification", {
-        method : "POST",
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify({email: email}),
-      })
-      const data = await resendResponse.json();
-      if (!resendResponse.ok){
-        if(data === "User Not Found"){
-          setOutcome({success: false, message: "Please Register with this email first"})
-        }
-      } else {
-        setOutcome({ success: true, message: data || "Please check email to see the verification code" });
-      }
+    try {
+      const response = await axios.post("api/v1/resend-verification", { email });
+
+      // If request is successful
+      setOutcome({
+        success: true,
+        message: response.data || "Please check email to see the verification code",
+      });
     } catch (error) {
-      console.log(error)
-      setOutcome({ success: false, message: "An error occurred. Please try again later." });
+      if (error.response && error.response.data === "User Not Found") {
+        setOutcome({ success: false, message: "Please register with this email first" });
+      } else {
+        console.log(error);
+        setOutcome({ success: false, message: "An error occurred. Please try again later." });
+      }
     }
-  }
+  };
 
   return (
     <div className='flex flex-col md:flex-row h-screen'>
@@ -146,7 +144,7 @@ const VerifyEmailPage = () => {
           <button
             type='submit'
             disabled={!isFormValid}
-            className={`block ${isFormValid ? 'bg-[#0F2439] text-white' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
+            className={`block ${isFormValid ? 'bg-[#0F2439] hover:bg-[#1d4165] shadow-md shadow-black/40 text-white cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             verify
           </button>

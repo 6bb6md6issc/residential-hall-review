@@ -13,6 +13,7 @@ const HomePageCard = () => {
         <img src={leftCard} alt="Logo" className="h-30 mb-5"/>
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Share Experience</h1>
         <Link 
+          to={'/all-buildings'}
           className="px-10 py-2 border-2 border-gray-800 rounded-md hover:bg-gray-100 transition-colors duration-300 font-medium text-gray-800"
         >
           share
@@ -25,7 +26,8 @@ const HomePageCard = () => {
         <img src={rightCard} alt="Logo" className="h-30 mb-5"/>
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Find Residential Hall</h1>
         <Link 
-            className="px-10 py-2 border-2 border-gray-800 rounded-md hover:bg-gray-100 transition-colors duration-300 font-medium text-gray-800"
+          to={'/all-buildings'}
+          className="px-10 py-2 border-2 border-gray-800 rounded-md hover:bg-gray-100 transition-colors duration-300 font-medium text-gray-800"
         >
           Find
         </Link>

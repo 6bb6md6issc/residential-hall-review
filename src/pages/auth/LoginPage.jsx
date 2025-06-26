@@ -2,7 +2,6 @@ import React, {useState, useEffect } from 'react'
 import sideImage from "../../assets/register_img.png"
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import FieldErrorMessage from '../../component/form/FieldErrorMessage'
 import FormSubmissionMessage from '../../component/form/FormSubmissionMessage'
 import { useAuth } from '../../provider/authProvider'
 import axios from 'axios'
@@ -102,7 +101,7 @@ const LoginPage = () => {
           <button
             type='submit'
             disabled={!isFormValid}
-            className={`block ${isFormValid ? 'bg-[#0F2439] text-white' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
+            className={`block ${isFormValid ? 'bg-[#0F2439] text-white hover:bg-[#3e4f5f] cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Login
           </button>

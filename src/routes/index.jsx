@@ -13,12 +13,16 @@ import ShareReviewPage from "../pages/ShareReviewPage";
 import Layout from "../layout/Layout";
 import LogoutPage from "../pages/auth/LogoutPage";
 import ReviewHeader from "../component/review/ReviewHeader";
+import AllBuildingsPage from "../pages/AllBuildingsPage";
 
 const Routes = () => {
   const { token } = useAuth();
-  // Route configurations go here
 
   const routesForPublic = [
+    {
+      path: "/all-buildings",
+      element: <AllBuildingsPage />,
+    },
     {
       path: "/rating",
       element: <ReviewHeader />,

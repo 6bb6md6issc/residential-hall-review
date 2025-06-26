@@ -3,11 +3,12 @@ import ReviewList from '../component/review/ReviewList'
 import ReviewHeader from '../component/review/ReviewHeader';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import NoSoBuilding from '../component/review/NoSoBuilding';
 
 const HallReviewPage = () => {
   const { buildingId } = useParams()
   const [data, setData] = useState({})
-
+  
   useEffect(() => {
     const fetchReview = async () => {
       try{
@@ -15,13 +16,14 @@ const HallReviewPage = () => {
         setData(response.data);
       } catch(error) {
         console.log("Error occurred" + error);
+        setData(null)
      }
     };
     fetchReview();
-  }, [])
+  }, [buildingId])
 
-  // if (!data || !data.reviews) return <div>Loading...</div>;
-  console.log(data.reviews);
+  if (data === null) return <NoSoBuilding />
+
   return (
     <div className='mb-20'>
       <ReviewHeader buildingName={data.building_name} buildingId={data.building_id}/>
