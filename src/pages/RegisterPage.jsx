@@ -49,25 +49,30 @@ const RegisterPage = () => {
     const payload = { email, password };
     // todo
     try {
-      const response = await axios.post("/api/v1/signup", payload, {
+      const response = await axios.post("/api/v1/auth/signup", payload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       // If request is successful
-      navigate("/verify");
+      navigate("/verify-account");
     } catch (error) {
       if (error.response) {
         const data = error.response.data;
-        if (data.message === "User Already Exists") {
-          setFieldErrors(prev => ({
+        console.log(data);
+        if (data === "User Already Exists") {
+          setOutcome({
             success: false,
             message: "This email is already registered",
-          }));
+          });
         }
       } else {
-        console.error("Network or server error:", error);
+        console.log("Network or server error:", error);
+        setOutcome({
+            success: false,
+            message: "An error occurred",
+          });
       }
     }
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import sideImage from "../assets/register_img.png"
 import FieldErrorMessage from '../component/form/FieldErrorMessage';
 import FormSubmissionMessage from '../component/form/FormSubmissionMessage';
+import axios from 'axios';
 
 const VerifyEmailPage = () => {
 
@@ -31,44 +32,45 @@ const VerifyEmailPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { email, code };
+    const payload = { email, verification_code: code };
     // todo
-    try{
-      const response = await fetch("/verify", {
-        method : "POST",
-        headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify(payload),
+    try {
+      const response = await axios.post("api/v1/auth/verify", payload, {
+        headers: { 'Content-Type': 'application/json' }
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        if (data.message === "User Not Found"){
-          setOutcome(prev => ({
+      // Successfully verified
+      setOutcome({
+        success: true,
+        message: "Please Login"
+      });
+
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data;
+        console.log("Error response data:", error.response.data);
+        if (error.response.data?.message === "User Not Found") {
+          setOutcome({
             success: false,
             message: "Please Register First"
-          }))
-        }
-        else if (data.message === "Verification Code Expired"){
-          setOutcome(prev => ({
+          });
+        } else if (message === "Verification Code Expired") {
+          setOutcome({
             success: false,
             message: "Verification Code Expired"
-          }))
-        }
-        else if (data.message === "Invalid Verification Code"){
-          setOutcome(prev => ({
+          });
+        } else if (message === "Invalid Credentials") {
+          setOutcome({
             success: false,
             message: "Invalid Verification Code"
-          }))
+          });
+        } else {
+          setOutcome({ success: false, message: "An unexpected error occurred." });
+          console.log("Unhandled error:", message);
         }
       } else {
-        // successfully verified
-        setOutcome(prev => ({
-          success: true,
-          message: "Please Login"
-        }))
+        console.log("Network or server error:", error);
       }
-    } catch(error){
-      console.error("Network or server error:", error);
     }
     
   }
@@ -76,7 +78,7 @@ const VerifyEmailPage = () => {
   // resend the verification code
   const handleResend = async () => {
     try {
-      const response = await axios.post("api/v1/resend-verification", { email });
+      const response = await axios.post("api/v1/auth/resend-verification", { email });
 
       // If request is successful
       setOutcome({
@@ -130,7 +132,7 @@ const VerifyEmailPage = () => {
             className='outline-none border-2 mb-2 border-black rounded-lg px-2 h-10 w-70'
           />
           <button 
-            className='block font-bold underline'
+            className='block font-bold underline cursor-pointer'
             onClick={handleResend}
           >
             resend
