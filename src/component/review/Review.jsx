@@ -38,7 +38,7 @@ const Review = ({rating_value, rating_id, start_year, created_at, content}) => {
                     {content}
                 </div>
                 <img 
-                    src={`${BASE_URL}/api/v1/image/${rating_id}`}
+                    src={`${BASE_URL}api/v1/image/${rating_id}`}
                     alt="" 
                     className='w-full md:w-[220px] rounded-2xl'
                 />
