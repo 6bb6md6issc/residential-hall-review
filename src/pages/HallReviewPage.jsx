@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import NoSoBuilding from '../component/review/NoSoBuilding';
 
+
 const HallReviewPage = () => {
   const { buildingId } = useParams()
   const [data, setData] = useState({})
@@ -23,6 +24,16 @@ const HallReviewPage = () => {
   }, [buildingId])
 
   if (data === null) return <NoSoBuilding />
+
+
+  if (!data.ratings || data.ratings.length === 0) {
+    return (
+      <div className='text-[#0F2439] text-2xl font-bold text-center my-8'>
+        <p>No review yet</p>
+        <p>Become the first to reivew</p>
+      </div>
+    )
+  }
 
   return (
     <div className='mb-20'>
