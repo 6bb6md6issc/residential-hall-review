@@ -22,6 +22,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
   const fileInputRef = useRef(null);
 
   const [previewUrl, setPreviewUrl] = useState(initialFileUrl);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (file && typeof file !== "string") {
@@ -62,6 +63,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
+    setIsSubmitting(true);
     // update data
     if (dataChanged){
       try{
@@ -109,6 +111,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         setOutcome({success: false, message: error})
       }
     }
+    setIsSubmitting(false);
   }
 
   return (
@@ -226,6 +229,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         <div className='flex justify-end'>
           <button
             onClick={handleDeleteReview}
+            disabled={isSubmitting}
             className='w-24 h-10 justify-left rounded-xl font-bold bg-red-400 mr-10 hover:bg-red-200 text-white cursor-pointer'
             style={{
               boxShadow: '2px 4px 4px -1px rgba(0, 0, 0, 0.4)'
@@ -236,7 +240,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
           <button 
             className='w-24 h-10 justify-left rounded-xl font-bold bg-[#0F2439] hover:bg-[#1d4165] shadow-md shadow-black/40 text-white cursor-pointer'
             type='submit'
-            disabled={!data.content}
+            disabled={!data.content || isSubmitting}
           >share</button>
         </div>
         <FormSubmissionMessage outcome={outcome}/>

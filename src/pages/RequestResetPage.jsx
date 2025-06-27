@@ -9,7 +9,7 @@ const RequestResetPage = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // check valid email
@@ -20,6 +20,11 @@ const RequestResetPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting){
+      return
+    }
+
+    setIsSubmitting(true);
     // todo
     try {
       const response = await axios.post('/api/v1/auth/reset-password-request', { email });
@@ -38,6 +43,8 @@ const RequestResetPage = () => {
       } else {
         setError('Something went wrong. Please try again later.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -76,7 +83,7 @@ const RequestResetPage = () => {
 
           <button
             type='submit'
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSubmitting}
             className={`block ${isFormValid ? 'bg-[#0F2439] text-white shadow-md shadow-black/40 hover:bg-[#1d4165] cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Send Reset Link

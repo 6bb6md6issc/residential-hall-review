@@ -47,6 +47,9 @@ const CreateNewReview = ({ buildingId }) => {
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
+    if(isSubmitting){
+      return
+    }
     // new review
     setIsSubmitting(true);
     const formData = new FormData();

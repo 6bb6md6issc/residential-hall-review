@@ -14,6 +14,7 @@ const ResetPage = () => {
   const [fieldError, setFieldError] = useState({});
   const [outcome, setOutcome] = useState({success: false, message: ""});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
 
@@ -38,8 +39,13 @@ const ResetPage = () => {
     setIsFormValid(isEmailValid && isPasswordValid && isConfirmPasswordValid);
   }, [email, password, confirmPassword])
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting){
+      return
+    }
+
+    setIsSubmitting(true)
     try{
       const response = await axios.post("api/v1/auth/reset-password", {
         email, new_password: confirmPassword, token: code
@@ -61,6 +67,8 @@ const ResetPage = () => {
         console.error("Network or server error:", error);
         setOutcome({ success: false, message: "Some error occurred" });
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -124,7 +132,7 @@ const ResetPage = () => {
 
           <button
             type='submit'
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSubmitting}
             className={`block ${isFormValid ? 'bg-[#0F2439] text-white hover:bg-[#1d4165] shadow-md shadow-black/40 cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Send Reset Link

@@ -15,6 +15,7 @@ const RegisterPage = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [outcome, setOutcome] = useState({success: false, message: ""});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
   
@@ -47,6 +48,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = { email, password };
+    setIsSubmitting(true);
     // todo
     try {
       const response = await axios.post("/api/v1/auth/signup", payload, {
@@ -54,7 +56,7 @@ const RegisterPage = () => {
           'Content-Type': 'application/json',
         },
       });
-
+      setIsSubmitting(false);
       // If request is successful
       navigate("/verify-account");
     } catch (error) {
@@ -74,6 +76,8 @@ const RegisterPage = () => {
             message: "An error occurred",
           });
       }
+    } finally {
+      setIsSubmitting(false);
     }
 
   }
@@ -139,7 +143,7 @@ const RegisterPage = () => {
 
           <button
             type='submit'
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSubmitting}
             className={`block ${isFormValid ? 'bg-[#0F2439] text-white  hover:bg-[#1d4165] shadow-md shadow-black/40 cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Register

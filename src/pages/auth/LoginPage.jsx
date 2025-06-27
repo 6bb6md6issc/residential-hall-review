@@ -15,6 +15,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [outcome, setOutcome] = useState({success: false, message: ""});
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
 
@@ -30,6 +31,8 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = { email, password };
+
+    setIsSubmitting(true);
 
     try {
       const response = await axios.post('/api/v1/auth/login', payload, {
@@ -52,6 +55,8 @@ const LoginPage = () => {
       } else {
         console.error("Network or server error:", error);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -100,7 +105,7 @@ const LoginPage = () => {
 
           <button
             type='submit'
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSubmitting}
             className={`block ${isFormValid ? 'bg-[#0F2439] text-white hover:bg-[#3e4f5f] cursor-pointer' : 'bg-gray-300 text-gray-400'} text-2xl font-bold px-6 py-2 rounded-2xl mt-8 mx-auto`}
           >
             Login
