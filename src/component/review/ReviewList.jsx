@@ -2,6 +2,16 @@ import React from 'react'
 import Review from './Review'
 
 const ReviewList = ({reviews}) => {
+
+  if (reviews.length === 0){
+    return (
+      <div className='text-[#0F2439] text-2xl font-bold text-center my-8'>
+        <p>No review yet</p>
+        <p>Become the first to reivew</p>
+      </div>
+    )
+  }
+
   return (
     <div className='mt-5'>
       {reviews.map((review, i) => (
