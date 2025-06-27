@@ -100,7 +100,7 @@ const NavBar = () => {
         </div>
 
       <div className="flex justify-center md:justify-end space-x-6 font-bold w-full md:w-auto">
-        
+        <Link to="/all-buildings">All Buildings</Link>
         <Link to="/my-review">My Review</Link>
         {token ?  <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
       </div>
