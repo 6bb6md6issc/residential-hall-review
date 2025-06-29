@@ -4,7 +4,6 @@ import './index.css'
 import App from './App.jsx'
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import axios from 'axios';
 import "./config/axiosConfig.jsx"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

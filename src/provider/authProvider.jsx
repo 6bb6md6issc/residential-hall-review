@@ -13,27 +13,6 @@ const AuthProvider = ({ children }) => {
     setToken_(newToken);
   };
 
-  // const checkAndRemoveExpiredToken = () => {
-  //   try {
-  //     if (!token) return false;
-
-  //     const { exp } = jwtDecode(token);
-  //     if (exp < Date.now() / 1000) {
-  //       localStorage.removeItem("token");
-  //       delete axios.defaults.headers.common["Authorization"];
-  //       setToken(null);
-  //       return true;
-  //     }
-  //     return false;
-  //   } catch (error) {
-  //     localStorage.removeItem("token");
-  //     delete axios.defaults.headers.common["Authorization"];
-  //     setToken(null);
-  //     console.error("Invalid token:", error);
-  //     return true;
-  //   }
-  // };
-
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -44,12 +23,10 @@ const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Memoized value of the authentication context
   const contextValue = useMemo(
     () => ({
       token,
       setToken,
-      // checkAndRemoveExpiredToken
     }),
     [token]
   );

@@ -2,20 +2,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
-// axios.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (
-//       error.response &&
-//       error.response.data.toLowerCase().includes('jwt expired')
-//     ) {
-//       // Token expired or invalid
-//       localStorage.removeItem('token');
-//       window.location.href = '/login';
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+
 
 axios.interceptors.request.use(async (config) => {
   const token = localStorage.getItem('token');
@@ -23,18 +10,19 @@ axios.interceptors.request.use(async (config) => {
   if (token) {
     try {
       const { exp } = jwtDecode(token);
-      const isExpired = exp * 1000 < Date.now();
+      const isExpired = exp * 1000 <= Date.now();
       if (isExpired) {
-        console.log("debugger 1:", config)
         localStorage.removeItem('token');
         delete config.headers.Authorization;
         // Don't attach the token
-        return config;
-      }
+      } else{
+        config.headers.Authorization = `Bearer ${token}`;
       // Otherwise token is valid, attach it
+      }
     } catch (err) {
       console.error('Invalid token:', err);
       localStorage.removeItem('token');
+      delete config.headers.Authorization;
     }
   }
 

@@ -10,9 +10,9 @@ const MyReviewPage = () => {
       if (!token) return;
       try{
         const response = await axios.get("/api/v1/rating/my-ratings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // }
         });
         setReviews(response.data);
       } catch(error) {

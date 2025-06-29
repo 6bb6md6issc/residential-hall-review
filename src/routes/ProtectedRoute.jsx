@@ -14,12 +14,9 @@ export const ProtectedRoute = () => {
     }
   };
 
-  // Check if the user is authenticated
   if (!token || isTokenExpired(token)) {
-    // If not authenticated, redirect to the login page
     return <Navigate to="/login" replace/>;
   }
 
-  // If authenticated, render the child routes
   return <Outlet />;
 };
