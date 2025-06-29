@@ -14,6 +14,7 @@ axios.interceptors.request.use(async (config) => {
       if (isExpired) {
         localStorage.removeItem('token');
         delete config.headers.Authorization;
+        delete axios.defaults.headers.common["Authorization"];
         // Don't attach the token
       } else{
         config.headers.Authorization = `Bearer ${token}`;
@@ -23,6 +24,7 @@ axios.interceptors.request.use(async (config) => {
       console.error('Invalid token:', err);
       localStorage.removeItem('token');
       delete config.headers.Authorization;
+      delete axios.defaults.headers.common["Authorization"];
     }
   }
 
