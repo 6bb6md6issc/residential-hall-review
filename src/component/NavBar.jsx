@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const NavBar = () => {
 
+  // const { token, checkAndRemoveExpiredToken } = useAuth();
   const { token } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +26,6 @@ const NavBar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
   // todo
   const handleResultClick = (name) => {
     setSearchTerm(name);
@@ -33,12 +33,13 @@ const NavBar = () => {
   };
 
   const handleSearch = useDebouncedCallback(async (searchTerm) => {
-    const searchParam = '/api/v1/building/search?searchText=' + searchTerm
+    const searchParam = '/api/v1/building/search?searchText=' + searchTerm;
     if (searchTerm.trim() === "") {
       setResults([]);
       setShowDropdown(false);
       return;
     }
+    // checkAndRemoveExpiredToken();
     try{
       const response = await axios.get(searchParam);
       setResults(response.data);

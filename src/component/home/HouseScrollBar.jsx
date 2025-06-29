@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import HouseCard from './HouseCard';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../provider/authProvider';
+
 const HouseScrollBar = () => {
+
+  // const {token, checkAndRemoveExpiredToken} = useAuth();
+  const {token} = useAuth();
+
   const houseListRef = useRef(null);
 
   const [buildings, setBuildings] = useState([])
