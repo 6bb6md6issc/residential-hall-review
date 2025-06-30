@@ -12,7 +12,7 @@ const PaginationBar = ({ currentPage, pageCount }) => {
           <button 
             key={idx}
             className={`mx-1 px-5 py-3 rounded-2xl
-              ${currentPage == idx + 1 ? "bg-gray-300 text-gray-500 font-bold text-3xl" : "text-2xl cursor-pointer hover:bg-gray-300"}`
+              ${currentPage == idx + 1 ? "bg-gray-300 text-[#0F2439] font-bold text-3xl" : "text-2xl cursor-pointer hover:bg-gray-300"}`
             }
             onClick={() => setSearchParams({page : idx + 1})}
           >
