@@ -14,11 +14,16 @@ import Layout from "../layout/Layout";
 import LogoutPage from "../pages/auth/LogoutPage";
 import ReviewHeader from "../component/review/ReviewHeader";
 import AllBuildingsPage from "../pages/AllBuildingsPage";
+import PaginationBar from "../component/PaginationBar";
 
 const Routes = () => {
   const { token } = useAuth();
 
   const routesForPublic = [
+    {
+      path: "/pagination",
+      element: <PaginationBar />,
+    },
     {
       path: "/all-buildings",
       element: <AllBuildingsPage />,

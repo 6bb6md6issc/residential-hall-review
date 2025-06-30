@@ -17,7 +17,8 @@ const HouseScrollBar = () => {
     const loadAllBuildings = async () => {
       try{
         const response = await axios.get("/api/v1/building/all")
-        setBuildings(response.data)
+        console.log("response: ", response)
+        setBuildings(response.data.content)
       }catch(err) {
         console.log(err)
       }finally{
@@ -59,7 +60,7 @@ const HouseScrollBar = () => {
         
         {/* Scrollable List of Houses */}
         <div className="flex overflow-x-auto scroll-smooth py-2 hide-scrollbar" ref={houseListRef}>
-          {buildings.slice(0, 7).map((building) => (
+          {buildings.slice(0, 6).map((building) => (
             <HouseCard 
               key={building.id} 
               buildingName={building.buildingName} 
