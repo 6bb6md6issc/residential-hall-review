@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { FileUp } from 'lucide-react';
 import { useAuth } from '../../provider/authProvider';
 import axios from 'axios';
+import FormSubmissionMessage from '../form/FormSubmissionMessage';
 
 const CreateNewReview = ({ buildingId }) => {
   const { token } = useAuth();
@@ -17,6 +18,7 @@ const CreateNewReview = ({ buildingId }) => {
   const fileInputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [outcome, setOutcome] = useState({success : false, message: ""});
 
   useEffect(() => {
     if (file && typeof file !== "string") {
@@ -72,9 +74,18 @@ const CreateNewReview = ({ buildingId }) => {
           'Content-Type': 'multipart/form-data'
         }
       });
+      setOutcome({success: true, message : "new rating successfully created"})
     } catch (error) {
       console.log(error);
-      alert("Failed to share review.");
+      let errorMessage = "Something went wrong";
+      
+      if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("too long")) {
+        errorMessage = "Content too long. Please do not exceed 90 words"
+      } else if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("upload")) {
+        errorMessage = "Upload file could not exceed 2MB"
+      } 
+
+      setOutcome({ success: false, message: errorMessage });
     } finally{
       setIsSubmitting(false);
     }
@@ -191,6 +202,7 @@ const CreateNewReview = ({ buildingId }) => {
             type='submit'
           >share</button>
         </div>
+        <FormSubmissionMessage outcome={outcome}/>
       </form>
     </div>
   )

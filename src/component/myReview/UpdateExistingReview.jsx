@@ -76,8 +76,13 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         });
         setOutcome({success: true, message: "successfully updated"})
       } catch( error ) {
-        console.log(error);
-        setOutcome({success: false, message: error})
+        let errorMessage = "Something went wrong";
+        
+        if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("too long")) {
+          errorMessage = "Content too long. Please do not exceed 90 words"
+        }
+
+        setOutcome({ success: false, message: errorMessage });
       }
     }
     // update file
@@ -92,8 +97,13 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         })
         setOutcome({success: true, message: "successfully updated"})
       } catch (error) {
-        console.log(error);
-        setOutcome({success: false, message: error})
+        let errorMessage = "Something went wrong";
+        
+        if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("maximum")) {
+          errorMessage = "Upload file could not exceed 2MB"
+        } 
+
+        setOutcome({ success: false, message: errorMessage });
       }
     }
 
@@ -107,8 +117,13 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         })
         setOutcome({success: true, message: "successfully updated"})
       } catch (error) {
-        console.log(error);
-        setOutcome({success: false, message: error})
+        let errorMessage = "Something went wrong";
+        
+        if (typeof error?.response?.data == "string") {
+          errorMessage = error?.response?.data;
+        }
+
+        setOutcome({ success: false, message: errorMessage });
       }
     }
     setIsSubmitting(false);
@@ -243,6 +258,7 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
             disabled={!data.content || isSubmitting}
           >share</button>
         </div>
+        {console.log("Outcome to render:", outcome)}
         <FormSubmissionMessage outcome={outcome}/>
       </form>
     </div>

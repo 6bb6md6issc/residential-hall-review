@@ -1,6 +1,7 @@
 import React from 'react'
 
 const FormSubmissionMessage = ({outcome}) => {
+  if (!outcome || typeof outcome.message !== 'string') return null;
   return (
     <div>
       {
