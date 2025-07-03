@@ -78,10 +78,11 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
       } catch( error ) {
         let errorMessage = "Something went wrong";
         
-        if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("too long")) {
-          errorMessage = "Content too long. Please do not exceed 90 words"
+        if (typeof error?.response?.data == "string") {
+          if (error?.response?.data.toLowerCase().includes("too long")) {
+            errorMessage = "Content too long. Please do not exceed 90 words"
+          }
         }
-
         setOutcome({ success: false, message: errorMessage });
       }
     }
@@ -98,10 +99,14 @@ const UpdateExistingReview = ({building, initialData, initialFile, initialFileUr
         setOutcome({success: true, message: "successfully updated"})
       } catch (error) {
         let errorMessage = "Something went wrong";
-        
-        if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("maximum")) {
-          errorMessage = "Upload file could not exceed 2MB"
-        } 
+
+        if (typeof error?.response?.data == "string"){
+          if (error?.response?.data.toLowerCase().includes("maximum")) {
+            errorMessage = "Upload file could not exceed 2MB"
+          } else if (error?.response?.data.toLowerCase().includes("jpg")) {
+            errorMessage = "Only jpg / jpeg files are accepted"
+          }
+        }
 
         setOutcome({ success: false, message: errorMessage });
       }

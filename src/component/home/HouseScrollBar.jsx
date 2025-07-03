@@ -3,6 +3,9 @@ import HouseCard from './HouseCard';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../provider/authProvider';
+import { ChevronRight } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+
 
 const HouseScrollBar = () => {
 
@@ -54,7 +57,7 @@ const HouseScrollBar = () => {
         {/* Left Arrow Button */}
         <button 
           onClick={scrollLeft} 
-          className="absolute left-10 z-10 bg-gray-500 text-white p-2 rounded-full">
+          className="absolute left-10 z-10 bg-black text-white p-2 rounded-full hover:cursor-pointer hover:bg-gray-400">
           &#8592;
         </button>
         
@@ -80,7 +83,7 @@ const HouseScrollBar = () => {
         {/* Right Arrow Button */}
         <button 
           onClick={scrollRight} 
-          className="absolute right-10 z-10 bg-gray-500 text-white p-2 rounded-full">
+          className="absolute right-10 z-10 bg-black text-white p-2 rounded-full hover:cursor-pointer hover:bg-gray-400">
           &#8594;
         </button>
       </div>

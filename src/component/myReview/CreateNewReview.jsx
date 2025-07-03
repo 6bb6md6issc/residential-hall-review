@@ -83,6 +83,8 @@ const CreateNewReview = ({ buildingId }) => {
         errorMessage = "Content too long. Please do not exceed 90 words"
       } else if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("upload")) {
         errorMessage = "Upload file could not exceed 2MB"
+      } else if (typeof error?.response?.data == "string" && error?.response?.data.toLowerCase().includes("jpg")) {
+        errorMessage = "Only JPG / JPEG file are accepted"
       } 
 
       setOutcome({ success: false, message: errorMessage });
